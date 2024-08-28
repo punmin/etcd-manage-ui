@@ -121,22 +121,22 @@ export default {
         this.etcdServers = response.data || [];
         if(this.EtcdName == '' && this.etcdServers.length > 0){
           this.EtcdName = this.etcdServers[0].name;
-          localStorage.setItem("EtcdID", this.etcdServers[0].id);
-          localStorage.setItem("EtcdName", this.etcdServers[0].name);
+          sessionStorage.setItem("EtcdID", this.etcdServers[0].id);
+          sessionStorage.setItem("EtcdName", this.etcdServers[0].name);
         }
       });
     },
 
     // 选择etcd服务
     onEtcdServer(etcdId) {
-      localStorage.setItem("EtcdID", etcdId);
+      sessionStorage.setItem("EtcdID", etcdId);
       let item = {};
       this.etcdServers.forEach(val => {
         if(val.id == etcdId){
           item = val;
           this.EtcdName = val.name;
-          localStorage.setItem("EtcdID", val.id);
-          localStorage.setItem("EtcdName", val.name);
+          sessionStorage.setItem("EtcdID", val.id);
+          sessionStorage.setItem("EtcdName", val.name);
         }
       });
       console.log(item);
@@ -154,7 +154,7 @@ export default {
   },
   created() {
     let lang = localStorage.getItem("etcd-language") || "en";
-    this.EtcdName = localStorage.getItem('EtcdName') || '请选择';
+    this.EtcdName = sessionStorage.getItem('EtcdName') || '请选择';
     this.changeLanguage(lang);
   }
 };

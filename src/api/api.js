@@ -17,7 +17,7 @@ axios.interceptors.request.use(
             config.headers.Token = loginInfo.token;
         }
         // etcd服务
-        let etcdID = localStorage.getItem('EtcdID') || ''; // 读取当前选中的etcd server
+        let etcdID = sessionStorage.getItem('EtcdID') || ''; // 读取当前选中的etcd server
         config.headers.EtcdID = etcdID;
         iView.LoadingBar.start();
         return config

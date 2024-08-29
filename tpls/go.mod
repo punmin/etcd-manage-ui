@@ -1,0 +1,1 @@
+module github.com/punmin/etcd-manage-ui

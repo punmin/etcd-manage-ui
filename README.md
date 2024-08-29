@@ -16,6 +16,44 @@ etcd-manage 是一个用go编写的etcd管理工具，具有友好的界面(类�
 5. 当前只实现了etcd v3 api管理key v2在路上。
 6. 在使用时可直接修改默认的两个etcd连接地址为真实可用地址即可开始体验。
 
+**开发说明**
+
+- 当只需要修改前端项目时，为了便于调试运行，后端使用当前运行的环境，前端代码通过nocalhost运行在k8s的开发环境容器，通过nginx代理前后端解决跨域，使用nocalhost将nginx forward到本地
+
+- 配置说明
+```shell
+
+#配置静态资源路径前缀
+config\index.js
+assetsPublicPath: '/ui/'
+
+#配置基础路由前缀和访问地址
+package.json
+"dev": "webpack-dev-server --content-base /ui/ --inline --progress --config build/webpack.dev.conf.js --host 0.0.0.0 --port 8080"
+
+#配置api服务地址（nginx forward到本地的地址）
+src\config\index.js
+BaseUrl: 'http://127.0.0.1:10280'
+
+#通过nginx分离前后端
+cat >  /etc/nginx/conf.d/default.conf << EOF
+server {
+    listen       80;
+    listen  [::]:80;
+    server_name  localhost;
+
+    location /ui {
+        #ui pod nocalhost调试模式启动
+        proxy_pass   http://ui_pod_ip:8080;
+    }
+
+    location / {
+        #server pod 当前生产正在使用的版本
+        proxy_pass   http://server_pod_ip:10280;
+    }
+}
+EOF
+```
 
 ## HELM 安装使用
 

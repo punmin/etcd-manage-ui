@@ -1,1 +1,1 @@
-module github.com/punmin/etcd-manage-ui
+module github.com/punmin/etcd-manage-ui/tpls
